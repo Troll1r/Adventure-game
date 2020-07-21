@@ -18,10 +18,15 @@ public class ThirdPersonCamera : MonoBehaviour
     public int distanceMin = 4;
     public int distanceMax = 10;
 
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Update()
     {
-        curX += Input.GetAxis("Mouse X") * sensX;
-        curY += Input.GetAxis("Mouse Y") * sensY;
+        curX += Input.GetAxis("MouseX") * sensX;
+        curY += Input.GetAxis("MouseY") * sensY;
         curY = Mathf.Clamp(curY, Y_ANGLE_MIN, Y_ANGLE_MAX);
     }
     void LateUpdate()
