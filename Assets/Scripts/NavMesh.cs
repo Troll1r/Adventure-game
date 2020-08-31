@@ -1,10 +1,15 @@
-﻿using System.Collections;
+﻿using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityStandardAssets;
+using UnityStandardAssets.Characters.ThirdPerson;
+
 
 public class NavMesh : MonoBehaviour
 {
+	bool chk;
 	public Transform target;
 	NavMeshAgent agent;
 	void Start()
@@ -13,6 +18,10 @@ public class NavMesh : MonoBehaviour
 	}
 	void Update()
 	{
-		agent.SetDestination(target.position);
+		chk = GetComponent<AICharacterControl>().check;
+		if (chk)
+        {
+			agent.SetDestination(target.position);
+		}
 	}
 }
