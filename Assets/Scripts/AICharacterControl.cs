@@ -6,44 +6,39 @@ using System.Collections.Generic;
 
 namespace UnityStandardAssets.Characters.ThirdPerson
 {
-    [RequireComponent(typeof (UnityEngine.AI.NavMeshAgent))]
-    [RequireComponent(typeof (ThirdPersonCharacter))]
+    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(ThirdPersonCharacter))]
     public class AICharacterControl : MonoBehaviour
     {
-        public UnityEngine.AI.NavMeshAgent agent { get; private set; }            
-        public ThirdPersonCharacter character { get; private set; } 
-        public Transform target;
-        public string targetTag = "Player";
+        private NavMeshAgent agent;
+        public ThirdPersonCharacter character;
+
+        private GameObject target;
+        
         public int rays = 8;
-        public int distance = 33;
+        public int rayDistance = 30;
+        public int stopDistance = 2;
         public float angle = 40;
         public Vector3 offset;
-        public Transform tar;
-        private NavMeshAgent Nana;
-        public bool check = false;
-        public Collider cld;
-        private bool isMove = true;
+
         private void Start()
         {
-            agent = GetComponentInChildren<UnityEngine.AI.NavMeshAgent>();
+            agent = GetComponent<NavMeshAgent>();
             character = GetComponent<ThirdPersonCharacter>();
-            
-	        agent.updateRotation = false;
-	        agent.updatePosition = true;
-            tar = GameObject.FindGameObjectWithTag(targetTag).transform;
-            Nana = GetComponent<NavMeshAgent>();
+
+            agent.updateRotation = false;
+            agent.updatePosition = true;
         }
-        bool GetRaycast(Vector3 dir)
+        GameObject GetRaycast(Vector3 dir)
         {
-            bool result = false;
             RaycastHit hit = new RaycastHit();
             Vector3 pos = transform.position + offset;
-            if (Physics.Raycast(pos, dir, out hit, distance))
+            if (Physics.Raycast(pos, dir, out hit, rayDistance))
             {
-                if (hit.transform == target)
+                if (hit.collider.GetComponent<PlayerController>())
                 {
-                    result = true;
                     Debug.DrawLine(pos, hit.point, Color.green);
+                    return hit.collider.gameObject;
                 }
                 else
                 {
@@ -52,70 +47,51 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             }
             else
             {
-                Debug.DrawRay(pos, dir * distance, Color.red);
+                Debug.DrawRay(pos, dir * rayDistance, Color.red);
             }
-            return result;
+            return null;
         }
-        public bool RayToScan()
+        GameObject RayToScan()
         {
-            bool result = false;
-            bool a = false;
-            bool b = false;
+            GameObject result = null;
             float j = 0;
             for (int i = 0; i < rays; i++)
             {
                 var x = Mathf.Sin(j);
                 var y = Mathf.Cos(j);
                 j += angle * Mathf.Deg2Rad / rays;
+                
                 Vector3 dir = transform.TransformDirection(new Vector3(x, 0, y));
-                if (GetRaycast(dir)) a = true;
-                if (x != 0)
-                {
+                if (x!=0) 
                     dir = transform.TransformDirection(new Vector3(-x, 0, y));
-                    if (GetRaycast(dir)) b = true;  
-                }
+
+                if (result = GetRaycast(dir)) return result;
             }
-            if (a || b) result = true;
             return result;
         }
-        private void Update()
+        private void FixedUpdate()
         {
-            if (Vector3.Distance(transform.position, target.position) < distance)
+            if (target = RayToScan())
             {
-                    {
-                        if (RayToScan())
-                        {
-                            Nana.enabled = true;
-                            if (agent.remainingDistance > agent.stoppingDistance)
-                                character.Move(agent.desiredVelocity, false, false);
-                            check = true;
-                        
-                        }
-                        else
-                        {
-                            character.Move(Vector3.zero, false, false);
-                            check = false;
-                        }
-                    }                   
-            }
-        }
-        public void SetTarget(Transform target)
-        {
-            this.target = target;
-        }
-        public void OnTriggerEnter(Collider MyTrigger)
-        {
-            if(isMove)
-            {
-                Nana.isStopped = false;
-                isMove = false;
+                if (Vector3.Distance(transform.position, target.transform.position) < stopDistance)
+                {
+                    // stop
+                    agent.isStopped = true;
+                }
+                else
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(target.transform.position);
+                }
             }
             else
-                Nana.isStopped = true;
-        }
-        public void OnTriggerExit(Collider other)
-        {
-            Nana.isStopped = false;
-        }
+            {
+                agent.isStopped = true;
+                // лучше задать рандомную точку и патрулирование
+            }
+
+            Vector3 dir = agent.isStopped ? Vector3.zero : agent.desiredVelocity;
+            character.Move(dir, false, false);
+        }        
     }
 }
