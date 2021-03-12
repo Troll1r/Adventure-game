@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public GameObject Player;
 	public GameObject Shot;
-	
 	void Start(){
 		//Shot.SetActive (false);
 	}
