@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static int hp = 20;
     void Start()
     {
-        
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
     }
 }
