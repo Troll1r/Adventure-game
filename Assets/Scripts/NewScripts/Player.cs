@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static int hp = 20;
-    void Start()
-    {
+    private int _hp = 20;
+    public UnityEngine.UI.Text hpText;
+    public int playerHp { 
+        get { return _hp; } 
+        set 
+        {
+            _hp = value;
+            if (_hp <= 0)
+            {
+                _hp = 0;
+                // enable ragdoll
+            }
+            hpText.text = _hp.ToString();
+        } 
     }
 
-    void Update()
+    void Start()
     {
+        GameManager.Instance().player = this;
     }
 }
