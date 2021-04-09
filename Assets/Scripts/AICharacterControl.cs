@@ -12,6 +12,9 @@ public class AICharacterControl : MonoBehaviour
     private bool trg = false;
     public int hp;
     public int damage;
+    public Animator animator;
+    public List<Rigidbody> rgElements;
+    public List<Collider> colliders;
     public int timer;
     private void Start()
     {
@@ -66,13 +69,38 @@ public class AICharacterControl : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            Destroy(this.gameObject);
+            EnablePhysics();
+            Destroy(this.gameObject, 10);
         }
+        else
+            DisablePhysics();
     }
     /*private void DamageGiven()
     {
 
     }*/
+
+    public void EnablePhysics()
+    {
+        animator.enabled = false;
+        for (int i = 0; i < rgElements.Count; i++)
+            rgElements[i].isKinematic = false;
+        for (int i = 0; i < rgElements.Count; i++)
+            colliders[i].enabled = true;
+
+
+
+
+    }
+    public void DisablePhysics()
+    {
+        animator.enabled = true;
+        for (int i = 0; i < rgElements.Count; i++)
+            rgElements[i].isKinematic = true;
+        for (int i = 0; i < rgElements.Count; i++)
+            colliders[i].enabled = false;
+
+    }
     public void Hit()
     {
         GameManager.Instance().player.playerHp -= 1;
