@@ -1,14 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
+
 
 public class Player : MonoBehaviour
 {
     public Animator animator;
     public List<Rigidbody> rgElements;
     public List<Collider> colliders;
+    public int hp;
     private int _hp = 10;
     public UnityEngine.UI.Text hpText;
+    void Start()
+    {
+        _hp = hp;
+        hpText.text = "HP:" + _hp.ToString();
+        DisablePhysics();
+        GameManager.Instance().player = this;
+    }
     public int playerHp { 
         get { return _hp; } 
         set 
@@ -23,16 +34,10 @@ public class Player : MonoBehaviour
             if (_hp > 0)
                 DisablePhysics();
             hpText.text = "HP: " + _hp.ToString();
+            hp = _hp;
 
 
         }
-    }
-
-    void Start()
-    {
-        hpText.text ="HP:" + _hp.ToString();
-        DisablePhysics();
-        GameManager.Instance().player = this;
     }
 
     public void EnablePhysics()
@@ -42,7 +47,7 @@ public class Player : MonoBehaviour
             rgElements[i].isKinematic = false;
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = true;
-
+        
 
 
 

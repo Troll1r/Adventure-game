@@ -7,7 +7,7 @@ public class AICharacterControl : MonoBehaviour
 {
     public GameObject enemy;
     private NavMeshAgent agent;
-    public int stopDistance = 2;
+    public int stopDistance = 10;
     public int damageDistance = 4;
     private bool trg = false;
     public int hp;
@@ -33,7 +33,7 @@ public class AICharacterControl : MonoBehaviour
             else
             {
                 GetComponent<Animator>().SetFloat("Forward", 0);
-                GetComponent<Animator>().SetTrigger("Shot");
+                //GetComponent<Animator>().SetTrigger("Shot");
 
             }
         }
@@ -87,6 +87,7 @@ public class AICharacterControl : MonoBehaviour
             rgElements[i].isKinematic = false;
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = true;
+        agent.isStopped = true;
 
 
 
