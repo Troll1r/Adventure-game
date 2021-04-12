@@ -33,7 +33,7 @@ public class AICharacterControl : MonoBehaviour
             else
             {
                 GetComponent<Animator>().SetFloat("Forward", 0);
-                //GetComponent<Animator>().SetTrigger("Shot");
+                GetComponent<Animator>().SetTrigger("Shot");
 
             }
         }
