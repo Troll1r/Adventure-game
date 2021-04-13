@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+
 
 public class ArenaController : MonoBehaviour
 {
@@ -9,10 +11,11 @@ public class ArenaController : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject[] walls;
     public int alive;
-    int zone;
+    public int zone;
     public GameObject[] areas;
     bool isWave = false;
     bool spawn_;
+    System.TimeSpan interval = new System.TimeSpan(0, 0, 2);
 
     [SerializeField] int WaveCount = 0;
     void Start()
@@ -28,13 +31,11 @@ public class ArenaController : MonoBehaviour
 
     void Update()
     {
-        if (alive >= 0 && isWave && spawn_)
+        if (alive == 0 && isWave)
         {
-            Debug.Log(alive + " " + WaveCount);
-            spawn_ = false;
-            if (!spawn_)
-                StartCoroutine(WaveSpawn());
-
+            Debug.Log(alive + " 123");
+            Thread.Sleep(interval);
+            Spawn();
         }
 
         if (WaveCount == 5)
@@ -52,6 +53,7 @@ public class ArenaController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            alive = 0;
             isWave = true;
             Spawn();
             walls[0].SetActive(true);
@@ -66,8 +68,9 @@ public class ArenaController : MonoBehaviour
     public void Spawn()
     {
         int maxEnemies;
-        maxEnemies = 1;//spawnPoints.Count * WaveCount * zone;
+        maxEnemies = spawnPoints.Count * WaveCount * zone;
 
+        alive = maxEnemies;
         for (int i = 0; i < maxEnemies; i++)
         {
             int abc = i;
@@ -82,15 +85,15 @@ public class ArenaController : MonoBehaviour
             }
         }
         WaveCount++;
-        alive = maxEnemies;
         Debug.Log(alive);
         spawn_ = true;
     }
     public void SetAlive(int _alive )
     {
-        alive -= _alive;
-
-        Debug.Log(alive);
+        Debug.Log(alive +"  123321");
+        alive--;
+        Debug.Log("= " + alive);
+        
     }
 }
                                                 

@@ -72,9 +72,10 @@ public class AICharacterControl : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
+            arena.SetAlive(1);
             EnablePhysics();
             Destroy(this.gameObject, 10);
-            arena.SetAlive(1);
+            
         }
         else
             DisablePhysics();
@@ -92,10 +93,6 @@ public class AICharacterControl : MonoBehaviour
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = true;
         agent.isStopped = true;
-
-
-
-
     }
     public void DisablePhysics()
     {
