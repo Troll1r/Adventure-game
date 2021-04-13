@@ -11,13 +11,16 @@ public class AICharacterControl : MonoBehaviour
     public int damageDistance = 4;
     private bool trg = false;
     public int hp;
-    public int damage;
+    public int damage = 0;
     public Animator animator;
     public List<Rigidbody> rgElements;
     public List<Collider> colliders;
     public int timer;
+    ArenaController arena;
+    public GameObject arenaController;
     private void Start()
     {
+        arena = arenaController.GetComponent<ArenaController>();
         agent = GetComponent<NavMeshAgent>();
     }
     private void FixedUpdate()
@@ -71,6 +74,7 @@ public class AICharacterControl : MonoBehaviour
         {
             EnablePhysics();
             Destroy(this.gameObject, 10);
+            arena.SetAlive(1);
         }
         else
             DisablePhysics();

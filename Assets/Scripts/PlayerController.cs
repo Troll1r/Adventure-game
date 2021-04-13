@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿		using UnityEngine;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
@@ -23,6 +23,6 @@ public class PlayerController : MonoBehaviour {
 	public void Hit()
     {
 		print("player attack");
-    }
+    }				
 }
 	

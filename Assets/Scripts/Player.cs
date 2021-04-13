@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
+using UnityStandardAssets.Characters.ThirdPerson;
 
 public class Player : MonoBehaviour
 {
