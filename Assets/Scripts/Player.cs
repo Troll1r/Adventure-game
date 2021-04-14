@@ -12,13 +12,23 @@ public class Player : MonoBehaviour
     public List<Collider> colliders;
     public int hp;
     private int _hp = 10;
-    public UnityEngine.UI.Text hpText;
+    public int money;
+    public int damage;
+    public Text damageText;
+    public Text hpText;
+    public GameObject PressText;
     void Start()
     {
         _hp = hp;
         hpText.text = "HP:" + _hp.ToString();
+        damageText.text = "Damage:" + damage.ToString();
         DisablePhysics();
         GameManager.Instance().player = this;
+        PressText.SetActive(false);
+    }
+    public void Update()
+    {
+        damageText.text = "Damage:" + damage.ToString();
     }
     public int playerHp { 
         get { return _hp; } 
@@ -59,6 +69,26 @@ public class Player : MonoBehaviour
             rgElements[i].isKinematic = true;
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = false;
+
+    }
+    private void OnTriggerStay(Collider other)
+    {
+
+        if (other.gameObject.tag == "Turnik")
+        {
+            
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+
+                damage++;
+                
+                print("качаюсь");
+            }
+        PressText.SetActive(true);
+            
+        }
+        else
+            PressText.SetActive(false);
 
     }
 }

@@ -55,7 +55,6 @@ public class ArenaController : MonoBehaviour
         {
             alive = 0;
             isWave = true;
-            Spawn();
             walls[0].SetActive(true);
             walls[1].SetActive(true);
             walls[2].SetActive(true);
@@ -83,6 +82,7 @@ public class ArenaController : MonoBehaviour
             {
                 Instantiate(enemyPrefab, spawnPoints[1].transform.position, Quaternion.identity);
             }
+
         }
         WaveCount++;
         Debug.Log(alive);

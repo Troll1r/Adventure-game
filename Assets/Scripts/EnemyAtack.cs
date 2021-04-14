@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EmeryAttak : MonoBehaviour {
+public class EnemyAtack : MonoBehaviour {
 	public GameObject Emery;
 	public GameObject DeadZone;
 	
