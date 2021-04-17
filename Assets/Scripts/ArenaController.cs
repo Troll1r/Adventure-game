@@ -11,41 +11,41 @@ public class ArenaController : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject[] walls;
     public int alive;
-    public int zone;
+    public int waveCount;
     public GameObject[] areas;
     bool isWave = false;
     bool spawn_;
     System.TimeSpan interval = new System.TimeSpan(0, 0, 2);
 
-    [SerializeField] int WaveCount = 0;
+    [SerializeField] int enemyCount = 0;
     void Start()
     {
-
+        enemyCount = 0;
     }
-    IEnumerator WaveSpawn()
+    /*IEnumerator WaveSpawn()
     {
         yield return new WaitForSeconds(2);
         Spawn();
-
-    }
+    
+    }*/
 
     void Update()
     {
-        if (alive == 0 && isWave)
+        
+        if ( alive == 0 && isWave==true)
         {
-            Debug.Log(alive + " 123");
             Thread.Sleep(interval);
             Spawn();
         }
 
-        if (WaveCount == 5)
+        if (enemyCount == 0)
         {
             walls[0].SetActive(false);
             walls[1].SetActive(false);
             walls[2].SetActive(false);
             walls[3].SetActive(false);
-            zone++;
-            WaveCount = 0;
+            waveCount++;
+            //enemyCount = 0;
             isWave = false;
         }
     }
@@ -53,7 +53,6 @@ public class ArenaController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            alive = 0;
             isWave = true;
             walls[0].SetActive(true);
             walls[1].SetActive(true);
@@ -66,34 +65,18 @@ public class ArenaController : MonoBehaviour
      
     public void Spawn()
     {
-        int maxEnemies;
-        maxEnemies = spawnPoints.Count * WaveCount * zone;
 
-        alive = maxEnemies;
-        for (int i = 0; i < maxEnemies; i++)
+        
+        for (int i = 0; i < enemyCount; i++)
         {
-            int abc = i;
-            abc = abc % 2;
-            if(abc == 0)
-            {
-                Instantiate(enemyPrefab, spawnPoints[0].transform.position, Quaternion.identity);
-            }
-            if(abc == 1)
-            {
-                Instantiate(enemyPrefab, spawnPoints[1].transform.position, Quaternion.identity);
-            }
+            GameObject e = GameObject.Instantiate(enemyPrefab, spawnPoints[i % 2].transform.position, Quaternion.identity);
 
+            e.GetComponent<AICharacterControl>().arena = this;
         }
-        WaveCount++;
-        Debug.Log(alive);
+
+        Debug.Log("alive:" + alive);
         spawn_ = true;
     }
-    public void SetAlive(int _alive )
-    {
-        Debug.Log(alive +"  123321");
-        alive--;
-        Debug.Log("= " + alive);
-        
-    }
+
 }
                                                 

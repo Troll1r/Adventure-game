@@ -16,14 +16,15 @@ public class AICharacterControl : MonoBehaviour
     public List<Rigidbody> rgElements;
     public List<Collider> colliders;
     public int timer;
-    ArenaController arena;
-    public GameObject arenaController;
-    private void Start()
+    public ArenaController arena;
+    public int damageP;
+
+    public void Start()
     {
-        arena = arenaController.GetComponent<ArenaController>();
         agent = GetComponent<NavMeshAgent>();
+       
     }
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         float distance = Vector3.Distance(GameManager.Instance().player.transform.position, enemy.transform.position);
         if (trg)
@@ -49,7 +50,7 @@ public class AICharacterControl : MonoBehaviour
         {
             DamageTaken();
         }
-
+        
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -67,12 +68,13 @@ public class AICharacterControl : MonoBehaviour
             agent.isStopped = true;
         }
     }
-    private void DamageTaken(int damage = 1)
+    public void DamageTaken()
     {
-        hp -= damage;
+
+        hp -= GameManager.Instance().player.damage;
         if (hp <= 0)
         {
-            arena.SetAlive(1);
+            
             EnablePhysics();
             Destroy(this.gameObject, 10);
             
@@ -93,6 +95,7 @@ public class AICharacterControl : MonoBehaviour
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = true;
         agent.isStopped = true;
+        arena.alive--;
     }
     public void DisablePhysics()
     {
@@ -105,6 +108,6 @@ public class AICharacterControl : MonoBehaviour
     }
     public void Hit()
     {
-        GameManager.Instance().player.playerHp -= 1;
+        GameManager.Instance().player.playerHp -= damage;
     }
 }
