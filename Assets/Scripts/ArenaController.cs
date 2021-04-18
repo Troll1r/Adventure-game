@@ -32,7 +32,7 @@ public class ArenaController : MonoBehaviour
     void Update()
     {
         
-        if ( alive == 0 && isWave==true)
+        if ( alive == 0 && isWave)
         {
             Thread.Sleep(interval);
             Spawn();

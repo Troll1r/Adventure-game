@@ -95,7 +95,7 @@ public class AICharacterControl : MonoBehaviour
         for (int i = 0; i < rgElements.Count; i++)
             colliders[i].enabled = true;
         agent.isStopped = true;
-        arena.alive--;
+        //arena.alive--;
     }
     public void DisablePhysics()
     {
