@@ -25,6 +25,7 @@ public class UI : MonoBehaviour
                 isEsc = true;
                 canvas.SetActive(true);
                 UnityEngine.Cursor.visible = true;
+                UnityEngine.Screen.lockCursor = false;
             }
             else
             {
@@ -32,6 +33,7 @@ public class UI : MonoBehaviour
                 isEsc = false;
                 canvas.SetActive(false);
                 UnityEngine.Cursor.visible = false;
+                UnityEngine.Screen.lockCursor = true;
             }
         }
     }
